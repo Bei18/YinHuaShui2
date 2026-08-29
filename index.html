@@ -29,6 +29,7 @@
             outline: 2px solid #005a36;
         }
         
+        /* 统一的控制面板样式 */
         .control-panel {
             position: fixed;
             top: 20px;
@@ -36,20 +37,19 @@
             transform: translateX(-50%);
             width: auto;
             max-width: 95vw;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             -webkit-backdrop-filter: blur(12px);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 8px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            padding: 10px 15px;
+            padding: 10px 16px;
             z-index: 9999;
             display: flex;
             flex-wrap: nowrap;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
             gap: 12px;
-            overflow-x: auto;
             white-space: nowrap;
         }
 
@@ -61,54 +61,64 @@
         .control-panel.shake {
             animation: shake 0.4s ease-in-out;
             border-color: #dc2626;
-            background: rgba(254, 242, 242, 0.95);
+            background: rgba(254, 242, 242, 0.98);
         }
 
         .form-group {
             flex: 0 0 auto;
-            width: 120px;
+            width: 140px;
         }
 
         .form-group input {
             width: 100%;
-            height: 34px;
+            height: 36px;
             border: 1px solid #ccc;
             background: #fff;
             border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 9.5pt;
+            padding: 4px 10px;
+            font-size: 13px;
             text-align: center;
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            transition: all 0.2s ease;
         }
         .form-group input:focus {
             outline: none;
             border-color: #005a36;
             box-shadow: 0 0 0 2px rgba(0, 90, 54, 0.2);
         }
-        
+
         .copy-btn {
-            height: 34px;
-            padding: 0 18px;
+            height: 36px;
+            padding: 0 20px;
             background-color: #005a36;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 9.5pt;
+            font-weight: 600;
+            font-size: 13px;
             transition: all 0.2s ease;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 6px rgba(0, 90, 54, 0.3);
+            box-shadow: 0 2px 6px rgba(0, 90, 54, 0.25);
             flex-shrink: 0;
-            font-family: sans-serif;
+            white-space: nowrap;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
         .copy-btn:hover {
             background-color: #004026;
+            transform: translateY(-1px);
+        }
+        .copy-btn:active {
+            transform: translateY(0);
         }
         .copy-btn.copied {
             background-color: #16a34a !important;
+        }
+        .copy-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
         }
 
         .receipt-container {
@@ -318,9 +328,10 @@
             font-size: 13px;
             font-weight: bold;
             z-index: 999999;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            pointer-events: none;
         }
         .custom-toast.show { top: 80px; }
         .custom-toast.success { background: #005a36; }
@@ -335,14 +346,14 @@
     </div>
 
     <div class="form-group">
-       <input type="text" id="input-name-en" value="" placeholder="英文名">
+        <input type="text" id="input-name-en" value="" placeholder="英文名">
     </div>
 
     <div class="form-group">
         <input type="number" id="input-amount-cny" value="" step="0.01" placeholder="金额">
     </div>
 
-    <button class="copy-btn" id="btn-copy" onclick="copyReceiptAsImage()"> 复制图片 </button>
+    <button class="copy-btn" id="btn-copy" onclick="copyReceiptAsImage()">复制图片</button>
 </div>
 
 <div class="receipt-container" id="receipt-capture-area">
@@ -529,6 +540,9 @@
         const targetElement = document.getElementById('receipt-capture-area');
         const copyBtn = document.getElementById('btn-copy');
         
+        copyBtn.disabled = true;
+        copyBtn.innerText = "生成中...";
+
         html2canvas(targetElement, {
             scale: 3, 
             dpi: 300,
@@ -546,16 +560,26 @@
                         setTimeout(() => {
                             copyBtn.classList.remove('copied');
                             copyBtn.innerText = "复制图片";
+                            copyBtn.disabled = false;
                         }, 3000);
                         
                     }).catch(err => {
                         console.error("写入剪贴板失败: ", err);
                         showToast("剪贴板写入失败，请重试", "error");
+                        copyBtn.innerText = "复制图片";
+                        copyBtn.disabled = false;
                     });
                 } else {
-                    showToast("错误", "error");
+                    showToast("您的浏览器不支持剪贴板图片写入", "error");
+                    copyBtn.innerText = "复制图片";
+                    copyBtn.disabled = false;
                 }
             }, "image/png");
+        }).catch(err => {
+            console.error("Canvas生成失败: ", err);
+            showToast("生成图片失败，请重试", "error");
+            copyBtn.innerText = "复制图片";
+            copyBtn.disabled = false;
         });
     }
 
