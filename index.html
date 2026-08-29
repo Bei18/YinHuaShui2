@@ -2,7 +2,7 @@
 <html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
-    <title>香港特別行政區稅務局 - 繳稅證明書</title>
+    <title>印花税完税</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         *, *::before, *::after {
@@ -20,7 +20,6 @@
             align-items: center;
         }
 
-        /* 可编辑文本获得焦点时的样式 */
         [contenteditable="true"]:hover {
             background-color: #f0fdf4;
             outline: 1px dashed #005a36;
@@ -30,7 +29,6 @@
             outline: 2px solid #005a36;
         }
         
-        /* 控制面板 */
         .control-panel {
             position: fixed;
             top: 20px;
@@ -66,7 +64,6 @@
             background: rgba(254, 242, 242, 0.95);
         }
 
-        /* 统一三栏输入框的宽度为 100px */
         .form-group {
             flex: 0 0 auto;
             width: 100px;
@@ -114,7 +111,6 @@
             background-color: #16a34a !important;
         }
 
-        /* A4 纸张排版 - 1:1 标准 */
         .receipt-container {
             width: 210mm;
             min-width: 210mm;
@@ -141,7 +137,6 @@
             justify-content: space-between;
         }
 
-        /* 页眉 */
         .header-table {
             width: 100%;
             border-collapse: collapse;
@@ -182,7 +177,6 @@
             font-family: "Times New Roman", serif;
         }
 
-        /* 档案元数据网格 */
         .meta-table {
             width: 100%;
             border-collapse: collapse;
@@ -208,7 +202,6 @@
             padding: 0 2px;
         }
 
-        /* 主标题 */
         .doc-title {
             text-align: center;
             margin: 20px 0 25px 0;
@@ -227,7 +220,6 @@
             font-weight: bold;
         }
 
-        /* 双栏对照正文 */
         .content-table {
             width: 100%;
             border-collapse: collapse;
@@ -251,7 +243,6 @@
             line-height: 1.45;
         }
 
-        /* 完税明细表格 */
         .payment-details-table {
             width: 100%;
             border-collapse: collapse;
@@ -273,7 +264,6 @@
             font-family: "Courier New", monospace;
         }
 
-        /* 落款印章 */
         .signature-section {
             width: 100%;
             margin-top: 30px;
@@ -316,7 +306,6 @@
             line-height: 1.3;
         }
 
-        /* Toast 提示 */
         .custom-toast {
             position: fixed;
             top: -80px;
@@ -340,7 +329,6 @@
 </head>
 <body>
 
-<!-- 控制面板：三个输入框统一宽度 100px -->
 <div class="control-panel" id="action-control-panel">
     <div class="form-group">
         <input type="text" id="input-name-zh" value="" placeholder="纳税人中文名">
@@ -354,11 +342,9 @@
         <input type="number" id="input-amount-cny" value="" step="0.01" placeholder="人民币金额">
     </div>
 
-    <!-- 按钮文案更新为：生成并复制图片 -->
     <button class="copy-btn" id="btn-copy" onclick="copyReceiptAsImage()">生成并复制图片</button>
 </div>
 
-<!-- A4 主体 -->
 <div class="receipt-container" id="receipt-capture-area">
     <div class="receipt-inner">
         <div>
@@ -383,7 +369,6 @@
                 </tr>
             </table>
 
-            <!-- 档案元数据表 -->
             <table class="meta-table">
                 <tr>
                     <td style="width: 50%;">
@@ -407,7 +392,6 @@
                 </tr>
             </table>
 
-            <!-- 标题 -->
             <div class="doc-title">
                 <h1>繳 稅 證 明 書</h1>
                 <h2>LETTER OF CONFIRMATION OF TAX PAYMENT</h2>
@@ -427,7 +411,6 @@
                 </tr>
             </table>
 
-            <!-- 完税明细表 -->
             <table class="payment-details-table">
                 <thead>
                     <tr>
@@ -498,7 +481,6 @@
         const rawEnName = document.getElementById('input-name-en').value.trim();
         const cnyInputVal = document.getElementById('input-amount-cny').value.trim();
 
-        // 移除“陈大文”默认备用值，根据实际输入显示
         let nameStr = "";
         if (rawEnName && rawZhName) {
             nameStr = `${rawEnName.toUpperCase()} (${rawZhName})`;
@@ -536,7 +518,7 @@
         const amountCny = document.getElementById('input-amount-cny').value.trim();
 
         if (!zhName || !enName || !amountCny) {
-            triggerWarning("请完整填写控制面板信息（姓名与人民币金额）后再生成！");
+            triggerWarning("请完整填写（姓名与人民币金额）后再生成！");
             return;
         }
 
@@ -567,7 +549,7 @@
                         showToast("剪贴板写入失败，请重试", "error");
                     });
                 } else {
-                    showToast("当前浏览器不支持直接复制图片，请使用 Chrome 或 Edge", "error");
+                    showToast("错误", "error");
                 }
             }, "image/png");
         });
