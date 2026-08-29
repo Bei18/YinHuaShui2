@@ -29,28 +29,26 @@
             outline: 2px solid #005a36;
         }
         
-        /* 统一控制面板样式 */
+        /* 统一控制面板样式（与项目一保持一致） */
         .control-panel {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: auto;
+            width: 800px;
             max-width: 95vw;
-            background: rgba(255, 255, 255, 0.98);
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.95);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 15px 24px;
             z-index: 9999;
             display: flex;
-            flex-wrap: nowrap;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            white-space: nowrap;
+            gap: 15px;
         }
 
         @keyframes shake {
@@ -65,38 +63,45 @@
         }
 
         .form-group {
-            flex: 0 0 auto;
-            width: 140px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4b5563;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         .form-group input {
             width: 100%;
-            height: 36px;
-            border: 1px solid #ccc;
-            background: #fff;
-            border-radius: 4px;
-            padding: 4px 10px;
-            font-size: 13px;
-            text-align: center;
+            height: 38px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 0 12px;
+            font-size: 14px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             transition: all 0.2s ease;
         }
         .form-group input:focus {
             outline: none;
             border-color: #005a36;
-            box-shadow: 0 0 0 2px rgba(0, 90, 54, 0.2);
+            box-shadow: 0 0 0 3px rgba(0, 90, 54, 0.15);
         }
 
         .action-btn {
-            height: 36px;
-            padding: 0 20px;
+            height: 38px;
+            padding: 0 24px;
             background-color: #005a36;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
@@ -105,6 +110,7 @@
             flex-shrink: 0;
             white-space: nowrap;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            align-self: flex-end;
         }
         .action-btn:hover {
             background-color: #004026;
@@ -341,19 +347,22 @@
 <body>
     
 <div class="control-panel" id="action-control-panel">
-    <div class="form-group" style="width: 100px;">
-        <input type="text" id="input-name-zh" value="" placeholder="中文名">
+    <div class="form-group">
+        <label for="input-name-zh">中文姓名</label>
+        <input type="text" id="input-name-zh" value="" placeholder="例如：张三">
     </div>
 
-    <div class="form-group" style="width: 100px;">
-        <input type="text" id="input-name-en" value="" placeholder="英文名">
+    <div class="form-group">
+        <label for="input-name-en">英文姓名</label>
+        <input type="text" id="input-name-en" value="" placeholder="例如：ZHANG SAN">
     </div>
 
-    <div class="form-group" style="width: 100px;">
-        <input type="number" id="input-amount-cny" value="" step="0.01" placeholder="金额">
+    <div class="form-group">
+        <label for="input-amount-cny">人民币金额 (RMB)</label>
+        <input type="number" id="input-amount-cny" value="" step="0.01" placeholder="例如：1000.00">
     </div>
 
-    <button class="action-btn" id="btn-copy" onclick="copyReceiptAsImage()"> 复制图片 </button>
+    <button class="action-btn" id="btn-copy" onclick="copyReceiptAsImage()">复制图片</button>
 </div>
 
 <div class="receipt-container" id="receipt-capture-area">
