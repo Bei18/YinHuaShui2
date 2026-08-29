@@ -2,7 +2,7 @@
 <html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
-    <title>印花税完税</title>
+    <title>印花稅-完税</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         *, *::before, *::after {
@@ -348,7 +348,6 @@
 <div class="receipt-container" id="receipt-capture-area">
     <div class="receipt-inner">
         <div>
-            <!-- Header -->
             <table class="header-table">
                 <tr>
                     <td class="header-left">
@@ -373,11 +372,11 @@
                 <tr>
                     <td style="width: 50%;">
                         <span class="meta-label-red">檔案號碼 / File No. (TIN):</span><br>
-                        <span class="meta-value" id="display-file-no" contenteditable="true">91/20260829-8920</span>
+                        <span class="meta-value" id="display-file-no" contenteditable="true"></span>
                     </td>
                     <td style="width: 50%;">
                         <span class="meta-label-red">簽發日期 / Date of Issue:</span><br>
-                        <span class="meta-value" id="display-date-top" contenteditable="true">29/08/2026</span>
+                        <span class="meta-value" id="display-date-top" contenteditable="true"></span>
                     </td>
                 </tr>
                 <tr>
@@ -387,7 +386,7 @@
                     </td>
                     <td>
                         <span class="meta-label-red">課稅年度 / Year of Assessment:</span><br>
-                        <span class="meta-value" id="display-tax-year" contenteditable="true">2025/26</span>
+                        <span class="meta-value" id="display-tax-year" contenteditable="true"></span>
                     </td>
                 </tr>
             </table>
@@ -397,7 +396,6 @@
                 <h2>LETTER OF CONFIRMATION OF TAX PAYMENT</h2>
             </div>
 
-            <!-- 双栏文本 -->
             <table class="content-table">
                 <tr>
                     <td class="content-zh">
@@ -423,15 +421,14 @@
                 <tbody>
                     <tr>
                         <td style="font-family: serif; font-size: 9pt;">印花稅 / Stamp Duty</td>
-                        <td id="display-shroff-no" contenteditable="true">9-8920192-8</td>
-                        <td id="display-pay-date" contenteditable="true">29/08/2026</td>
+                        <td id="display-shroff-no" contenteditable="true"></td>
+                        <td id="display-pay-date" contenteditable="true"></td>
                         <td style="font-weight: bold; font-size: 8.5pt;" id="display-paid-amount">HK$ 0.00 (折合 RMB 0.00)</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- 印章与落款 -->
         <div>
             <table class="signature-section">
                 <tr>
@@ -445,7 +442,7 @@
                         <div class="paid-stamp">
                             <div style="font-size: 15pt; letter-spacing: 2px;">PAID</div>
                             <div style="font-size: 7.5pt; margin-top: -2px;">INLAND REVENUE DEPT</div>
-                            <div style="font-size: 8.5pt;" id="display-stamp-date">29 AUG 2026</div>
+                            <div style="font-size: 8.5pt;" id="display-stamp-date"></div>
                         </div>
                     </td>
                 </tr>
@@ -474,6 +471,13 @@
         const d = String(dateObj.getDate()).padStart(2, '0');
         const rand4 = Math.floor(1000 + Math.random() * 9000);
         return `91/${y}${m}${d}-${rand4}`;
+    }
+
+    function generateRandomShroffNo() {
+        const rand1 = Math.floor(1 + Math.random() * 9);
+        const rand7 = Math.floor(1000000 + Math.random() * 9000000);
+        const rand1Check = Math.floor(Math.random() * 10);
+        return `${rand1}-${rand7}-${rand1Check}`;
     }
 
     function calculateAndSync() {
@@ -549,7 +553,7 @@
                         showToast("剪贴板写入失败，请重试", "error");
                     });
                 } else {
-                    showToast("错误", "error");
+                    showToast("当前浏览器不支持直接复制图片，请使用 Chrome 或 Edge", "error");
                 }
             }, "image/png");
         });
@@ -582,6 +586,7 @@
         document.getElementById('display-tax-year').innerText = `${y - 1}/${String(y).slice(-2)}`;
 
         document.getElementById('display-file-no').innerText = generateRandomFileNo(today);
+        document.getElementById('display-shroff-no').innerText = generateRandomShroffNo();
     }
 
     document.querySelectorAll('.control-panel input').forEach(element => {
