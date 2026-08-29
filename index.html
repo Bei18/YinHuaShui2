@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <title>印花稅-完税</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<div class="control-panel" id="action-control-panel">
+    <div class="form-group">
+        <input type="text" id="input-name-zh" value="" placeholder="纳税人中文名">
+    </div>
+
+    <div class="form-group">
+        <input type="text" id="input-name-en" value="" placeholder="纳税人英文名">
+    </div>
+
+    <div class="form-group">
+        <input type="number" id="input-amount-cny" value="" step="0.01" placeholder="人民币金额">
+    </div>
+
+    <button class="copy-btn" id="btn-copy">生成并复制图片</button>
+</div>
+
+<div class="receipt-container" id="receipt-capture-area">
+    <div class="receipt-inner">
+        <div>
+            <table class="header-table">
+                <tr>
+                    <td class="header-left">
+                        <div class="ird-logo-container">
+                            <img class="ird-logo-img" src="Inland_Revenue_Department_logo.png" crossorigin="anonymous" alt="IRD Logo">
+                            <div>
+                                <div class="header-title-zh">稅 務 局</div>
+                                <div class="header-title-en">INLAND REVENUE DEPARTMENT</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="header-right">
+                        香港灣仔告士打道5號稅務大樓<br>
+                        Revenue Tower, 5 Gloucester Road, Wan Chai, Hong Kong<br>
+                        網址 Web site: www.ird.gov.hk<br>
+                        表格 Form No.: IR1273 (Confirmation)
+                    </td>
+                </tr>
+            </table>
+
+            <table class="meta-table">
+                <tr>
+                    <td style="width: 50%;">
+                        <span class="meta-label-red">檔案號碼 / File No. (TIN):</span><br>
+                        <span class="meta-value" id="display-file-no" contenteditable="true"></span>
+                    </td>
+                    <td style="width: 50%;">
+                        <span class="meta-label-red">簽發日期 / Date of Issue:</span><br>
+                        <span class="meta-value" id="display-date-top" contenteditable="true"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="meta-label-red">納稅人姓名 / Name of Taxpayer:</span><br>
+                        <span class="meta-value" id="display-taxpayer-name"></span>
+                    </td>
+                    <td>
+                        <span class="meta-label-red">課稅年度 / Year of Assessment:</span><br>
+                        <span class="meta-value" id="display-tax-year" contenteditable="true"></span>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="doc-title">
+                <h1>繳 稅 證 明 書</h1>
+                <h2>LETTER OF CONFIRMATION OF TAX PAYMENT</h2>
+            </div>
+
+            <table class="content-table">
+                <tr>
+                    <td class="content-zh">
+                        茲證明上述納稅人已向本局全數繳清下列課稅年度評稅通知書內所列的應繳稅款。特此證明。<br><br>
+                        本證明書乃根據本局電腦紀錄發出，用以確認納稅人履行《印花稅條例》（香港法例第117章）下的相關繳稅責任。
+                    </td>
+                    <td class="content-en">
+                        THIS IS TO CONFIRM that the abovenamed taxpayer has fully paid and settled all the tax specified in the Notice(s) of Assessment for the relevant Year of Assessment as detailed below.<br><br>
+                        This letter of confirmation is issued based on the records of this Department as evidence of settlement of tax liabilities under the Stamp Duty Ordinance (Cap. 117).
+                    </td>
+                </tr>
+            </table>
+
+            <table class="payment-details-table">
+                <thead>
+                    <tr>
+                        <th>稅項類別<br>Tax Type</th>
+                        <th>收款帳號/收條號碼<br>Shroff Account / Receipt No.</th>
+                        <th>繳款日期<br>Date of Payment</th>
+                        <th>已繳金額 (港幣/折合人民幣)<br>Amount Paid (HKD / RMB)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-family: serif; font-size: 9pt;">印花稅 / Stamp Duty</td>
+                        <td id="display-shroff-no" contenteditable="true"></td>
+                        <td id="display-pay-date" contenteditable="true"></td>
+                        <td style="font-weight: bold; font-size: 8.5pt;" id="display-paid-amount">HK$0.00 (折合RMB 0.00)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <table class="signature-section">
+                <tr>
+                    <td class="sig-box-left">
+                        稅務局局長<br>
+                        (署理 / 代行)<br>
+                        for Commissioner of Inland Revenue<br>
+                        香港特別行政區政府 HKSAR
+                    </td>
+                    <td class="sig-box-right">
+                        <div class="paid-stamp">
+                            <div style="font-size: 15pt; letter-spacing: 2px;">PAID</div>
+                            <div style="font-size: 7.5pt; margin-top: -2px;">INLAND REVENUE DEPT</div>
+                            <div style="font-size: 8.5pt;" id="display-stamp-date"></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="footer-note">
+                <strong>重要備註 / Important Note:</strong><br>
+                1. 本文件乃由稅務局系統自動發出之官方證明書。任何未經授權之塗改或偽造均屬違法。<br>
+                2. 如欲核實本證明書真偽，請致電本局熱線 (852) 187 8088 或電郵至 taxctr1@ird.gov.hk。<br>
+                1. This is an official Confirmation generated by the Inland Revenue Department's system.<br>
+                2. For verification of this confirmation, please contact IRD hotline at (852) 187 8088.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="customToast" class="custom-toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
