@@ -413,9 +413,9 @@
                 <thead>
                     <tr>
                         <th>稅項類別<br>Tax Type</th>
-                        <th>收款帳號 / 收條號碼<br>Shroff Account / Receipt No.</th>
+                        <th>收款帳號/收條號碼<br>Shroff Account / Receipt No.</th>
                         <th>繳款日期<br>Date of Payment</th>
-                        <th>已繳金額 (港幣 / 折合人民幣)<br>Amount Paid (HKD / RMB)</th>
+                        <th>已繳金額 (港幣/折合人民幣)<br>Amount Paid (HKD / RMB)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -423,7 +423,7 @@
                         <td style="font-family: serif; font-size: 9pt;">印花稅 / Stamp Duty</td>
                         <td id="display-shroff-no" contenteditable="true"></td>
                         <td id="display-pay-date" contenteditable="true"></td>
-                        <td style="font-weight: bold; font-size: 8.5pt;" id="display-paid-amount">HK$ 0.00 (折合 RMB 0.00)</td>
+                        <td style="font-weight: bold; font-size: 8.5pt;" id="display-paid-amount">HK$0.00 (折合RMB 0.00)</td>
                     </tr>
                 </tbody>
             </table>
@@ -502,9 +502,9 @@
             const hkdFormatted = hkdAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             const cnyFormatted = cnyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             
-            document.getElementById('display-paid-amount').innerText = `HK$ ${hkdFormatted} (折合 RMB ${cnyFormatted})`;
+            document.getElementById('display-paid-amount').innerText = `HK$ ${hkdFormatted} (折合RMB ${cnyFormatted})`;
         } else {
-            document.getElementById('display-paid-amount').innerText = `HK$ 0.00 (折合 RMB 0.00)`;
+            document.getElementById('display-paid-amount').innerText = `HK$ 0.00 (折合RMB 0.00)`;
         }
     }
 
