@@ -66,9 +66,10 @@
             background: rgba(254, 242, 242, 0.95);
         }
 
+        /* 统一三栏输入框的宽度为 100px */
         .form-group {
             flex: 0 0 auto;
-            width: 130px;
+            width: 100px;
         }
 
         .form-group input {
@@ -163,7 +164,6 @@
             display: flex;
             align-items: center;
         }
-        /* PNG 图片 Logo 样式 */
         .ird-logo-img {
             width: 42px;
             height: 42px;
@@ -340,7 +340,7 @@
 </head>
 <body>
 
-<!-- 控制面板 -->
+<!-- 控制面板：三个输入框统一宽度 100px -->
 <div class="control-panel" id="action-control-panel">
     <div class="form-group">
         <input type="text" id="input-name-zh" value="" placeholder="纳税人中文名">
@@ -350,11 +350,12 @@
        <input type="text" id="input-name-en" value="" placeholder="纳税人英文名">
     </div>
 
-    <div class="form-group" style="width: 150px;">
-        <input type="number" id="input-amount-cny" value="" step="0.01" placeholder="人民币金额 (CNY)">
+    <div class="form-group">
+        <input type="number" id="input-amount-cny" value="" step="0.01" placeholder="人民币金额">
     </div>
 
-    <button class="copy-btn" id="btn-copy" onclick="copyReceiptAsImage()">生成并复制繳稅證明書</button>
+    <!-- 按钮文案更新为：生成并复制图片 -->
+    <button class="copy-btn" id="btn-copy" onclick="copyReceiptAsImage()">生成并复制图片</button>
 </div>
 
 <!-- A4 主体 -->
@@ -366,7 +367,6 @@
                 <tr>
                     <td class="header-left">
                         <div class="ird-logo-container">
-                            <!-- 已替换为 PNG 图片且在同一目录下 -->
                             <img class="ird-logo-img" src="Inland_Revenue_Department_logo.png" crossorigin="anonymous" alt="IRD Logo">
                             <div>
                                 <div class="header-title-zh">稅 務 局</div>
@@ -398,7 +398,7 @@
                 <tr>
                     <td>
                         <span class="meta-label-red">納稅人姓名 / Name of Taxpayer:</span><br>
-                        <span class="meta-value" id="display-taxpayer-name">CHAN TAI MAN (陳大文)</span>
+                        <span class="meta-value" id="display-taxpayer-name"></span>
                     </td>
                     <td>
                         <span class="meta-label-red">課稅年度 / Year of Assessment:</span><br>
@@ -413,7 +413,7 @@
                 <h2>LETTER OF CONFIRMATION OF TAX PAYMENT</h2>
             </div>
 
-            <!-- 双栏文本：条文名称更改为印花稅條例 -->
+            <!-- 双栏文本 -->
             <table class="content-table">
                 <tr>
                     <td class="content-zh">
@@ -427,7 +427,7 @@
                 </tr>
             </table>
 
-            <!-- 完税明细表：税种更改为印花稅 / Stamp Duty -->
+            <!-- 完税明细表 -->
             <table class="payment-details-table">
                 <thead>
                     <tr>
@@ -442,7 +442,7 @@
                         <td style="font-family: serif; font-size: 9pt;">印花稅 / Stamp Duty</td>
                         <td id="display-shroff-no" contenteditable="true">9-8920192-8</td>
                         <td id="display-pay-date" contenteditable="true">29/08/2026</td>
-                        <td style="font-weight: bold; font-size: 8.5pt;" id="display-paid-amount">HK$ 27,608.70 (折合 RMB 25,400.00)</td>
+                        <td style="font-weight: bold; font-size: 8.5pt;" id="display-paid-amount">HK$ 0.00 (折合 RMB 0.00)</td>
                     </tr>
                 </tbody>
             </table>
@@ -498,9 +498,16 @@
         const rawEnName = document.getElementById('input-name-en').value.trim();
         const cnyInputVal = document.getElementById('input-amount-cny').value.trim();
 
-        const zhNameDisplay = rawZhName || "陳大文";
-        const enNameDisplay = rawEnName ? rawEnName.toUpperCase() : "CHAN TAI MAN";
-        document.getElementById('display-taxpayer-name').innerText = `${enNameDisplay} (${zhNameDisplay})`;
+        // 移除“陈大文”默认备用值，根据实际输入显示
+        let nameStr = "";
+        if (rawEnName && rawZhName) {
+            nameStr = `${rawEnName.toUpperCase()} (${rawZhName})`;
+        } else if (rawEnName) {
+            nameStr = rawEnName.toUpperCase();
+        } else if (rawZhName) {
+            nameStr = rawZhName;
+        }
+        document.getElementById('display-taxpayer-name').innerText = nameStr;
 
         if (cnyInputVal !== "") {
             const cnyAmount = parseFloat(cnyInputVal) || 0;
@@ -547,12 +554,12 @@
                     const item = new ClipboardItem({ "image/png": blob });
                     navigator.clipboard.write([item]).then(() => {
                         copyBtn.classList.add('copied');
-                        copyBtn.innerText = "已复制繳稅證明書至剪贴板";
+                        copyBtn.innerText = "已复制至剪贴板";
                         showToast("已复制至剪贴板", "success");
                         
                         setTimeout(() => {
                             copyBtn.classList.remove('copied');
-                            copyBtn.innerText = "生成并复制繳稅證明書";
+                            copyBtn.innerText = "生成并复制图片";
                         }, 3000);
                         
                     }).catch(err => {
